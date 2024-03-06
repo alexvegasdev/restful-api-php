@@ -2,12 +2,9 @@
 
 header('Content-Type: application/json');
 
-require 'vendor/autoload.php';
 require 'autoload.php';
-require 'app/Core/Dispatcher.php';
+require 'vendor/autoload.php';
 
-use App\Models\Category;
-use App\Models\Product;
+use App\Core\Dispatcher;
 
-// echo Product::get();
-// echo Category::update();
+(new Dispatcher(require 'routes/api.php'))->dispatch();

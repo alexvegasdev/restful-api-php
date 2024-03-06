@@ -1,7 +1,5 @@
 <?php
 
-namespace Routes;
-
 use App\Core\Route;
 use App\Core\RouteCollection;
 use App\Controllers\ProductController;
@@ -15,9 +13,8 @@ use App\Controllers\ProductController;
 |
 */
 
-
 $routes = new RouteCollection();
 
-$routes->addRoute(Route::get('/about', [ProductController::class, 'index']));
+$routes->addRoute(Route::get('/products', [ProductController::class, 'index']));
 
 return $routes;

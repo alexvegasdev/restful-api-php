@@ -6,6 +6,7 @@
     "validation",
     "category",
     "model",
-    "env"
+    "env",
+    "routes"
   ]
 }

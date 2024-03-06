@@ -2,38 +2,40 @@
 
 namespace App\Core;
 
-use App\Core\Route;
 use App\Core\RouteCollection;
 
 class Dispatcher
 {
+  public function __construct(
+    private RouteCollection $routes
+  ) {
+  }
   public function dispatch()
   {
     $method = $_SERVER['REQUEST_METHOD'];
     $url = $_SERVER['REQUEST_URI'];
 
-    $routes = require 'routes/api.php';
-
-    $route = $routes->getRouteByUri($url);
+    $route = $this->routes->getRouteByUri($url);
 
     if (!$route) {
-      echo "Ruta no encontrada";
-      return;
+      return $this->echoResponse('Ruta no encontrada');
     }
 
     if ($method !== $route->getMethodHttp()) {
-      echo "Método HTTP no permitido";
-      return;
+      return $this->echoResponse('Método HTTP no permitido');
     }
 
-    $controllerClassName = $route->getController();
+    $controllerClass = $route->getController();
+    $controller = new $controllerClass();
+    $controllerMethod = $route->getMethod();
 
-    $controller = new $controllerClassName();
-    $method = $route->getMethod();
+    $controller->$controllerMethod();
+  }
 
-    $controller->$method();
+  private function echoResponse(string $message): void
+  {
+    header('Content-Type: text/plain');
+    echo $message;
+    exit();
   }
 }
-
-$dispatcher = new Dispatcher();
-$dispatcher->dispatch();
